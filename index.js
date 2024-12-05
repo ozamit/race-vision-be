@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/api/data', async (req, res) => {
     try {
         // Use the native fetch without needing an external package
-        const response = await fetch('https://ergast.com/api/f1/2024/5/results.json');
+        const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9606&meeting_key=1246');
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -28,4 +28,4 @@ app.get('/api/data', async (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-});
+})
