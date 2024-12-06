@@ -2,6 +2,6 @@ const express = require("express");
 const router = express.Router();
 const sessionsController = require("../controllers/sessionsController");
 
-router.route("/getsessionsforyear").get(sessionsController.getsessionsforyear);
+router.route("/getracesessionsforyear").get(sessionsController.getracesessionsforyear);
 
 module.exports = router;
