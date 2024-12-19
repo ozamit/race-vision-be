@@ -9,7 +9,7 @@ const getAllPositions = async (req, res) => {
             return res.status(400).json({ message: 'Session key is required' });
         }
 
-        const positions = [1,2,3,4,5,6,7,8,9,10,12,13,14,15]; // Positions to fetch
+        const positions = [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20]; // Positions to fetch
         const results = [];
 
         for (const position of positions) {
@@ -20,6 +20,7 @@ const getAllPositions = async (req, res) => {
             }
 
             const data = await response.json();
+            console.log('Data:', data);
             const driverNumber = data[data.length - 1].driver_number; // Extract the driver number from the last object
             results.push({ position, driverNumber });
         }
