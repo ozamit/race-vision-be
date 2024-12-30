@@ -25,8 +25,7 @@ const getOneUser = async (req, res) => {
     }
 };
 
-
-
+// *** EMAIL AND PASSWORD ARE CASE SENSITIVE ***
 const login = async (req, res) => {
     console.log("login call");
     console.log("req: ", req.body);
