@@ -20,7 +20,7 @@ const getAllPositions = async (req, res) => {
             }
 
             const data = await response.json();
-            console.log('Data:', data);
+            // console.log('Data:', data);
             const driverNumber = data[data.length - 1].driver_number; // Extract the driver number from the last object
             results.push({ position, driverNumber });
         }
@@ -32,5 +32,13 @@ const getAllPositions = async (req, res) => {
     }
 };
 
+const saveFinalRaceResultToDataBase = async (req, res) => {
+    // check if race result exist in the database
+    // save new or update existing
+};
 
-module.exports = { getAllPositions };
+const getRaceResultFromDB = async (req, res) => {
+    // if not exist fetch from api and save to db
+};
+
+module.exports = { getAllPositions, saveFinalRaceResultToDataBase };

@@ -30,22 +30,22 @@ const getNextRaceSession = async (req, res) => {
         const currentDate = new Date(); // Get the current date
         const year = 2024; // Extract the current year
 
-        console.log("First, fetching all race sessions for year:", year);
+        // console.log("First, fetching all race sessions for year:", year);
 
         // Fetch race sessions for the current year from the API
         const response = await fetch(`https://api.openf1.org/v1/sessions?session_name=Race&year=${year}`);
 
         if (response.status !== 200) {
-            console.log(`HTTP error! Status: ${response.status}`);
+            // console.log(`HTTP error! Status: ${response.status}`);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        console.log("response.status: ", response.status);
+        // console.log("response.status: ", response.status);
         const sessions = await response.json();
         const data = {sessions: sessions};
 
         // Debug log the raw response to inspect the structure
-        console.log("API Response Data:", data);
+        // console.log("API Response Data:", data);
 
         // Check if `sessions` exists, is an array, and is not empty
         if (data.sessions === 0) {
@@ -72,7 +72,7 @@ const getNextRaceSession = async (req, res) => {
             .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date, descending
             .pop();
             // [0]; // Get the most recent past session
-            console.log("lastRace: ", lastRace);
+            // console.log("lastRace: ", lastRace);
 
         if (lastRace) {
             // Respond with the last race session if found
