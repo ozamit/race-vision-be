@@ -8,12 +8,17 @@ const savePredictions = async (req, res) => {
     const { user, sessionKey, meetingKey, predictedOrder } = req.body;
 
     // Debugging: Print received data
-    // console.log("Received data:", { user, sessionKey, meetingKey, predictedOrder });
+    console.log("Received data:", { user, sessionKey, meetingKey, predictedOrder });
 
     // Validate required fields
-    if (!user || !sessionKey || !meetingKey || !predictedOrder) {
-      console.error("Missing required fields:", { user, sessionKey, meetingKey, predictedOrder });
-      return res.status(400).json({ message: "All fields are required." });
+    if (!sessionKey || !meetingKey || !predictedOrder) {
+      console.error("Missing required fields:", { sessionKey, meetingKey, predictedOrder });
+      return res.status(400).json({ message: "Error saving. Try later." });
+    }
+
+    if (!user) {
+      console.error("Missing required fields:", { user });
+      return res.status(400).json({ message: "Please Login first" });
     }
 
     // Check if a prediction already exists for the user and meetingKey
