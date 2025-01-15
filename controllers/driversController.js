@@ -3,7 +3,6 @@ const Driver = require('../model/driver'); // Adjust the path as per your folder
 const getDrivers = async (req, res) => {
   
     try {
-        // Use the native fetch without needing an external package
         const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9662&meeting_key=1252');
         
         if (!response.ok) {

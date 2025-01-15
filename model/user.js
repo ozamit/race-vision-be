@@ -6,6 +6,7 @@ const userSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: false,
         trim: true
     },
     email: {
@@ -16,8 +17,13 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
+        unique: false,
         required: true
     },
+    admin: {
+        type: Boolean,
+        default: false,
+      },
     createdAt: {
         type: Date,
         default: Date.now
