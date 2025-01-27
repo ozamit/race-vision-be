@@ -1,4 +1,4 @@
-const Session = require('../model/Session'); // Assuming your Session model is in the models folder
+const Session = require('../model/session'); // Assuming your Session model is in the models folder
 
 const getracesessionsforyear = async (req, res) => {
     try {

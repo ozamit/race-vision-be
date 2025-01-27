@@ -105,7 +105,6 @@ const getPredictionsByUserId = async (req, res) => {
   };
 
 
-
 // Update Final Score for Prediction Controller
   const updateFinalScoreforPrediction = async (req, res) => {
     console.log("start:", req.query);
