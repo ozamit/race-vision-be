@@ -91,9 +91,9 @@ const saveFinalRaceResultToDB = async (req, res) => {
       res.status(500).json({ message: 'Error processing race result' });
     }
   };
+
+
   
-
-
   const getRaceResultFromDB = async (req, res) => {
     try {
       const { sessionKey } = req.query;

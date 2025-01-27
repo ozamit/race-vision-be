@@ -1,3 +1,4 @@
+const Session = require('../model/Session'); // Assuming your Session model is in the models folder
 
 const getracesessionsforyear = async (req, res) => {
     try {
@@ -87,9 +88,91 @@ const getNextRaceSession = async (req, res) => {
     }
 };
 
-// module.exports = {
-//     getNextRaceSession
-// };
+const saveSessionsToDB = async (req, res) => {
+    try {
+        console.log("start saveSessionsToDB");
+
+        // Fetch race sessions from the API
+        const response = await fetch(`https://api.openf1.org/v1/sessions?session_name=Race&year=2025`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let newSessionsCount = 0;
+
+        for (const session of data) {
+            // Check if the session already exists in the DB
+            const existingSession = await Session.findOne({ session_key: session.session_key });
+
+            if (!existingSession) {
+                // Save the new session to the DB
+                const newSession = new Session(session);
+                await newSession.save();
+                newSessionsCount++;
+            }
+        }
+
+        // Respond with the number of new sessions added
+        return res.status(200).json({ message: `${newSessionsCount} new session(s) added to the database.` });
+    } catch (error) {
+        console.error('Error processing race sessions:', error);
+        return res.status(500).json({ message: 'Error processing race sessions' });
+    }
+};
+
+const getNextRaceSessionFromDB = async (req, res) => {
+    try {
+        const currentDate = new Date(); // Get the current date
+
+        // Query the database for sessions with a date in the future
+        const nextRace = await Session.find({ date_start: { $gt: currentDate } })
+            .sort({ date_start: 1 }) // Sort by start date in ascending order
+            .limit(1); // Only get the next session
+
+        if (nextRace.length > 0) {
+            // If a future session is found, respond with it
+            return res.status(200).json(nextRace[0]);
+        }
+
+        // If no future sessions are found, call saveSessionsToDB to refresh the database
+        console.log("No future race session found. Attempting to refresh sessions...");
+        await saveSessionsToDB(req, res);
+
+        // After refreshing, inform the user that no future sessions are currently available
+        return res.status(404).json({ message: "No future session found. Please check later." });
+    } catch (error) {
+        console.error('Error finding the next race session:', error);
+        return res.status(500).json({ message: 'Error finding the next race session' });
+    }
+};
+
+const getRaceSessionsForYearFromDB = async (req, res) => {
+    try {
+        const year = 2024;
+
+        // Fetch race sessions from the database for the given year
+        const sessions = await Session.find({
+            year: year, // Filter sessions by year
+            session_name: 'Race' // Ensure only race sessions are retrieved
+        });
+
+        if (!sessions || sessions.length === 0) {
+            // If no sessions are found, respond with a 404 status
+            return res.status(404).json({ message: 'No race sessions found for the year.' });
+        }
+
+        // Respond with the fetched sessions
+        return res.status(200).json(sessions);
+    } catch (error) {
+        console.error('Error fetching race sessions for year:', error);
+        return res.status(500).json({ message: 'Error fetching race sessions' });
+    }
+};
 
 
-module.exports = { getracesessionsforyear, getNextRaceSession };
+
+
+module.exports = { getracesessionsforyear, getNextRaceSession, saveSessionsToDB, getNextRaceSessionFromDB, getRaceSessionsForYearFromDB };

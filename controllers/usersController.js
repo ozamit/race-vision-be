@@ -77,4 +77,23 @@ const register = async (req, res) => {
     }
 };
 
-module.exports = { login, register, getOneUser };
+const getAllUsers = async (req, res) => {
+    try {
+        // Fetch all users from the database and exclude their passwords
+        const users = await User.find().select('-password'); // Exclude password field
+
+        if (!users || users.length === 0) {
+            console.log("No users found");
+            return res.status(404).json({ message: "No users found" });
+        }
+
+        console.log("Users found: ", users);
+        return res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching users: ", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+module.exports = { login, register, getOneUser, getAllUsers };
