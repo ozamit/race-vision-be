@@ -1,9 +1,9 @@
-const Driver = require('../model/driver'); // Adjust the path as per your folder structure
+const Driver = require('../model/driver');
 
 const getDrivers = async (req, res) => {
   
     try {
-        const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9662&meeting_key=1252');
+        const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9662&session_key=9685');
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -35,7 +35,7 @@ const saveDriversToDB = async (req, res) => {
     try {
         // Fetch data from the external API
         console.log('Fetching drivers from the API...');
-        const response = await fetch('https://api.openf1.org/v1/drivers?meeting_key=1252&session_key=9662');
+        const response = await fetch('https://api.openf1.org/v1/drivers?meeting_key=1253&session_key=9685');
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

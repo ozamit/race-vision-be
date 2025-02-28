@@ -29,7 +29,7 @@ const getracesessionsforyear = async (req, res) => {
 const getNextRaceSession = async (req, res) => {
     try {
         const currentDate = new Date(); // Get the current date
-        const year = 2024; // Extract the current year
+        const year = 2025; // Extract the current year
 
         // console.log("First, fetching all race sessions for year:", year);
 
@@ -64,6 +64,7 @@ const getNextRaceSession = async (req, res) => {
             // Respond with the next race session if found
             return res.status(200).json(nextRace);
         }
+        
 
         console.log("No future race session found. Fetching the last race session.");
 
@@ -87,6 +88,8 @@ const getNextRaceSession = async (req, res) => {
         return res.status(500).json({ message: 'Error fetching race sessions' });
     }
 };
+
+
 
 const saveSessionsToDB = async (req, res) => {
     try {
