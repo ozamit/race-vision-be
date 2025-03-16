@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose'); // Import Mongoose
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +38,20 @@ app.use("/positions", require("./routes/positions"));
 app.use("/sessions", require("./routes/sessions"));
 app.use("/users", require("./routes/users"));
 app.use("/predictions", require("./routes/predictions"));
+
+
+// // Sample controller function
+// const myController = () => {
+//   console.log("Scheduled task executed at:", new Date());
+//   // You can also call your database, send emails, etc.
+// };
+
+// // Schedule the task (Runs every day at midnight)
+// cron.schedule('5 * * * 5', () => {
+//   console.log("Running scheduled task...");
+//   myController();
+// });
+
 
 
 // Start Server

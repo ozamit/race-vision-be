@@ -63,7 +63,6 @@ const saveFinalRaceResultToDB = async (req, res) => {
         });
       }
     
-      
       // Check if race result already exists for the given sessionKey
       let raceResult = await RaceResult.findOne({ sessionKey });
   

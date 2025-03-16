@@ -154,7 +154,7 @@ const getNextRaceSessionFromDB = async (req, res) => {
 
 const getRaceSessionsForYearFromDB = async (req, res) => {
     try {
-        const year = 2024;
+        const year = 2025;
 
         // Fetch race sessions from the database for the given year
         const sessions = await Session.find({

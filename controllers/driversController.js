@@ -3,7 +3,7 @@ const Driver = require('../model/driver');
 const getDrivers = async (req, res) => {
   
     try {
-        const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9662&session_key=9685');
+        const response = await fetch('https://api.openf1.org/v1/drivers?session_key=9662&session_key=9693');
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -16,6 +16,7 @@ const getDrivers = async (req, res) => {
         res.status(500).json({ message: 'Error fetching data' });
     }
 };
+
 
 const getDriversLocalDB = async (req, res) => {
     try {
@@ -35,7 +36,7 @@ const saveDriversToDB = async (req, res) => {
     try {
         // Fetch data from the external API
         console.log('Fetching drivers from the API...');
-        const response = await fetch('https://api.openf1.org/v1/drivers?meeting_key=1253&session_key=9685');
+        const response = await fetch('https://api.openf1.org/v1/drivers?meeting_key=1254&session_key=9693');
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -85,5 +86,6 @@ const saveDriversToDB = async (req, res) => {
         });
     }
 };
+
 
 module.exports = { getDrivers, getDriversLocalDB, saveDriversToDB };
