@@ -8,10 +8,16 @@ const PORT = process.env.PORT || 5001;
 require('dotenv').config();
 
 
+// CORS options
+const corsOptions = {
+  origin: ['https://race-vision-fe.onrender.com', 'http://localhost:3000'], // Add your dev and prod origins
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+
 // Middleware
-app.use(cors({
-  origin: 'https://race-vision-fe.onrender.com'
-}));
+// Apply CORS middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // MongoDB Connection
