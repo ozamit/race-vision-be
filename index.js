@@ -9,7 +9,9 @@ require('dotenv').config();
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://race-vision-fe.onrender.com'
+}));
 app.use(express.json());
 
 // MongoDB Connection
