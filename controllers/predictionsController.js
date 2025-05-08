@@ -65,7 +65,7 @@ const savePredictions = async (req, res) => {
 
 
 
-// Get Predictions by User ID Controller
+// Get Predictions by User ID
 const getPredictionsByUserId = async (req, res) => {
     console.log("start:", req.body);
     try {

@@ -1,4 +1,6 @@
 const Driver = require('../model/driver');
+const gridDriver = require('../model/gridDriver');
+
 
 const getDrivers = async (req, res) => {
   
@@ -16,6 +18,20 @@ const getDrivers = async (req, res) => {
         res.status(500).json({ message: 'Error fetching data' });
     }
 };
+
+const getGridDriversLocalDB = async (req, res) => {
+    try {
+      // Fetch 20 grid drivers from the database
+      const gridDriver = await gridDriver.find();
+  
+      // Respond with the retrieved drivers
+      res.status(200).json(gridDriver);
+    } catch (error) {
+      // Handle errors and send appropriate response
+      console.error('Error fetching drivers from DB:', error);
+      res.status(500).json({ error: 'Failed to fetch drivers from the database' });
+    }
+  };
 
 
 const getDriversLocalDB = async (req, res) => {
@@ -88,4 +104,4 @@ const saveDriversToDB = async (req, res) => {
 };
 
 
-module.exports = { getDrivers, getDriversLocalDB, saveDriversToDB };
+module.exports = { getDrivers, getGridDriversLocalDB, getDriversLocalDB, saveDriversToDB };

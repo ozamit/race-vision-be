@@ -101,36 +101,92 @@ const saveFinalRaceResultToDB = async (req, res) => {
         return res.status(400).json({ message: 'Session key is required' });
       }
   
-      // Retrieve the race result from the database using the sessionKey
+      // Try to find the race result for the requested sessionKey
       let raceResult = await RaceResult.findOne({ sessionKey });
   
-      // If the race result doesn't exist, call the saveFinalRaceResultToDB function to fetch and save it
       if (!raceResult) {
-        console.log(`Race result not found for sessionKey: ${sessionKey}, fetching and saving...`);
-        
-        // Call the saveFinalRaceResultToDB function within this controller
-        const saveResultResponse = await saveFinalRaceResultToDB(req, res);
+        console.log(`Race result not found for sessionKey: ${sessionKey}. Falling back to sessionKey 2500...`);
+        raceResult = await RaceResult.findOne({ sessionKey: 2500 });
   
-        // If saving was successful, set the new race result
-        if (saveResultResponse.status === 200) {
-          // Use the sessionKey to fetch the new result from the database after saving
-          raceResult = await RaceResult.findOne({ sessionKey });
-        } else {
-          // If the save operation failed, return the error message
-          return res.status(saveResultResponse.status).json(saveResultResponse.body);
+        if (!raceResult) {
+          return res.status(404).json({ message: 'Race result not found for provided sessionKey or fallback sessionKey 2500' });
         }
       }
-
-    
+  
       res.status(200).json({
-        message: 'Race result fetched successfully',
+        message: 'Race result retrieved successfully',
         raceResult,
       });
+  
     } catch (error) {
-      console.error('Error fetching race result:', error);
-      res.status(500).json({ message: 'Error fetching race result' });
+      console.error('Error retrieving race result:', error);
+      res.status(500).json({ message: 'Error retrieving race result' });
+    }
+  };
+
+  const testing = async (req, res) => {
+    console.log("START - Received saveFinalRaceResultFromAdminToDB");
+  }
+  
+
+  const saveFinalRaceResultFromAdminToDB = async (req, res) => {
+    console.log("START - Received saveFinalRaceResultFromAdminToDB");
+  
+    try {
+      let { sessionKey, raceResultOrder } = req.body;
+      console.log("Received sessionKey:", sessionKey);
+      console.log("Received raceResultOrder:", raceResultOrder);
+  
+      // Validate sessionKey
+      sessionKey = Number(sessionKey);
+      if (!sessionKey || !Array.isArray(raceResultOrder)) {
+        return res.status(400).json({ message: 'sessionKey (number) and raceResultOrder (array) are required' });
+      }
+  
+      // Sanitize and structure raceResultOrder
+      const preparedOrder = raceResultOrder.map((item, index) => ({
+        driver_number: Number(item.driver_number),
+        position: Number(item.position ?? index + 1), // fallback to order index if no position given
+      }));
+  
+      // Validate each item (optional, uncomment to enforce)
+      // for (const item of preparedOrder) {
+      //   if (
+      //     typeof item.driver_number !== 'number' ||
+      //     typeof item.position !== 'number'
+      //   ) {
+      //     return res.status(400).json({ message: 'Each race result must include valid driver_number and position' });
+      //   }
+      // }
+  
+      let raceResult = await RaceResult.findOne({ sessionKey });
+  
+      if (raceResult) {
+        // Update existing result
+        raceResult.raceResultOrder = preparedOrder;
+        await raceResult.save();
+        console.log('Race result updated:', raceResult);
+      } else {
+        // Create new race result
+        raceResult = new RaceResult({
+          sessionKey,
+          raceResultOrder: preparedOrder,
+        });
+        await raceResult.save();
+        console.log('New race result saved:', raceResult);
+      }
+  
+      res.status(200).json({
+        message: 'Race result saved successfully',
+        raceResult,
+      });
+  
+    } catch (error) {
+      console.error('Error saving race result:', error);
+      res.status(500).json({ message: 'Error saving race result' });
     }
   };
   
 
-module.exports = { getAllPositions, saveFinalRaceResultToDB, getRaceResultFromDB };
+
+module.exports = { testing, getAllPositions, saveFinalRaceResultToDB, getRaceResultFromDB, saveFinalRaceResultFromAdminToDB };

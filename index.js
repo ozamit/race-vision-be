@@ -4,7 +4,7 @@ const mongoose = require('mongoose'); // Import Mongoose
 const cron = require('node-cron');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 require('dotenv').config();
 
 
@@ -51,7 +51,6 @@ app.use("/predictions", require("./routes/predictions"));
 //   console.log("Running scheduled task...");
 //   myController();
 // });
-
 
 
 // Start Server

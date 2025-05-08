@@ -90,7 +90,6 @@ const getNextRaceSession = async (req, res) => {
 };
 
 
-
 const saveSessionsToDB = async (req, res) => {
     try {
         console.log("start saveSessionsToDB");
