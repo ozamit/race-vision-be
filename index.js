@@ -46,6 +46,7 @@ app.use("/positions", require("./routes/positions"));
 app.use("/sessions", require("./routes/sessions"));
 app.use("/users", require("./routes/users"));
 app.use("/predictions", require("./routes/predictions"));
+app.use("/ai", require("./routes/ai"));
 
 
 // // Sample controller function
