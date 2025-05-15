@@ -87,14 +87,14 @@ const getPredictionsByUserId = async (req, res) => {
       // Check if predictions were found
       if (predictions.length === 0) {
         console.log("No predictions found for user ID:", userId);
-        return res.status(200).json({ message: "No predictions found for this user." });
+        return res.status(200).json({ success: true, message: "No predictions found for this user." });
       }
   
       // Debugging: Log the found predictions
       console.log("Predictions found:", predictions);
   
       // Send success response with predictions
-      return res.status(200).json({ message: "Predictions retrieved successfully.", predictions });
+      return res.status(200).json({ success: true, message: "Predictions retrieved successfully.", predictions });
     } catch (error) {
       // Debugging: Log the error
       console.error("Error fetching predictions:", error);

@@ -21,17 +21,17 @@ const getDrivers = async (req, res) => {
 
 const getGridDriversLocalDB = async (req, res) => {
     try {
-      // Fetch 20 grid drivers from the database
-      const gridDriver = await gridDriver.find();
+      // Fetch and sort grid drivers by __v ascending
+      const gridDrivers = await gridDriver.find().sort({ __v: 1 });
   
-      // Respond with the retrieved drivers
-      res.status(200).json(gridDriver);
+      // Respond with the sorted drivers
+      res.status(200).json(gridDrivers);
     } catch (error) {
-      // Handle errors and send appropriate response
       console.error('Error fetching drivers from DB:', error);
       res.status(500).json({ error: 'Failed to fetch drivers from the database' });
     }
   };
+  
 
 
 const getDriversLocalDB = async (req, res) => {
