@@ -21,28 +21,37 @@ const savePredictions = async (req, res) => {
       return res.status(400).json({ message: "Please Login first" });
     }
 
-    // Check if a prediction already exists for the user and meetingKey
-    const existingPrediction = await Prediction.findOne({ user, meetingKey });
+    // Check if a prediction already exists for the user and sessionKey
+    const existingPrediction = await Prediction.findOne({ user, sessionKey });
 
     if (existingPrediction) {
       // Update the existing prediction
+      console.log("prediction exist:", existingPrediction.sessionKey);
       existingPrediction.sessionKey = sessionKey;
       existingPrediction.predictedOrder = predictedOrder;
       const updatedPrediction = await existingPrediction.save();
 
-      // Debugging: Log the updated prediction
-    //   console.log("Prediction updated successfully:", updatedPrediction);
+    // Debugging: Log the updated prediction
+    // console.log("Prediction updated successfully:", updatedPrediction);
 
       // Send success response
       return res.status(200).json({ message: "Prediction updated successfully.", prediction: updatedPrediction });
     }
+
+    // Enrich each prediction item with session_key and meeting_key
+const enrichedPredictedOrder = predictedOrder.map((item) => ({
+  ...item,
+  session_key: sessionKey,
+  meeting_key: meetingKey,
+}));
+
 
     // Create a new prediction document
     const newPrediction = new Prediction({
       user,
       sessionKey,
       meetingKey,
-      predictedOrder,
+      predictedOrder: enrichedPredictedOrder,
     });
 
     // Save to the database
